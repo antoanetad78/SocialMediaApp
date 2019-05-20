@@ -111,4 +111,63 @@ router.delete('/:id', auth, async (req, res) => {
     }
 })
 
+// @route         PUT api/posts/like/:id
+// @desc          Like a post
+// @access        Private
+
+router.put('/like/:id', auth, async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id)
+        if (!post) return res.status(404).json({
+            msg: 'Post not found'
+        })
+
+        if (post.likes.filter(like => like.user.toString() === req.user.id).length > 0 || post.user.toString() === req.user.id) {
+            return res.status(400).json('Cannot like own posts or post have already been liked by you')
+        }
+        post.likes.unshift({
+            user: req.user.id
+        })
+        await post.save()
+        return res.json(post.likes)
+
+    } catch (error) {
+        console.error(error.message)
+        if (error.kind === 'ObjectId') return res.status(400).json({
+            msg: 'Invalid Request. Post not found'
+        })
+
+        res.status(500).send('Server error')
+    }
+})
+
+// @route         PUT api/posts/unlike/:id
+// @desc          Un-Like a post
+// @access        Private
+
+router.put('/unlike/:id', auth, async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id)
+        if (!post) return res.status(404).json({
+            msg: 'Post not found'
+        })
+
+        if (post.likes.filter(like => like.user.toString() === req.user.id).length === 0 || post.user.toString() === req.user.id) {
+            return res.status(400).json('You havent liked this post and can not unlike it')
+        }
+        const like = post.likes.map(like => like.user.toString()).indexOf(req.user.id)
+        post.likes.splice(like, 1)
+        await post.save()
+        return res.json(post.likes)
+
+    } catch (error) {
+        console.error(error.message)
+        if (error.kind === 'ObjectId') return res.status(400).json({
+            msg: 'Invalid Request. Post not found'
+        })
+
+        res.status(500).send('Server error')
+    }
+})
+
 module.exports = router
