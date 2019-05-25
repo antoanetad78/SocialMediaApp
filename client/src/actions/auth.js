@@ -7,7 +7,8 @@ import {
     AUTH_ERROR,
     LOGIN_FAIL,
     LOGIN_SUCCESS,
-    LOGOUT
+    LOGOUT,
+    CLEAR_PROFILE
 } from '../constants';
 import {
     setAlert
@@ -117,6 +118,10 @@ export const loginUser = ({
 
 export const logout = () => dispatch => {
     dispatch({
+        type: CLEAR_PROFILE
+    })
+    dispatch({
         type: LOGOUT
     })
+
 }
