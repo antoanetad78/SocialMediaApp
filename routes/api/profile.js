@@ -23,7 +23,7 @@ router.get('/me', auth, async (req, res) => {
 
         if (!profile) {
             return res.status(400).json({
-                msg: 'This has no profile yet'
+                msg: 'This user has no profile yet'
             })
         }
         res.json(profile)
