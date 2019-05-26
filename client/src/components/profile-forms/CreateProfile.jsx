@@ -14,6 +14,7 @@ const CreateProfile = ({ createProfile, history }) => {
     githubusername: "",
     bio: "",
     twitter: "",
+    youtube: "",
     facebook: "",
     instagram: "",
     linkedin: ""
