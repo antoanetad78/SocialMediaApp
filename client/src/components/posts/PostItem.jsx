@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
 import { addLike, removeLike, deletePost } from "../../actions/post";
-import Spinner from "../layout/Spinner";
 
 const PostItem = ({
   deletePost,

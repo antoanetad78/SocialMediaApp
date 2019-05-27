@@ -8,7 +8,9 @@ import {
   POST_ERROR,
   UPDATE_LIKES,
   DELETE_POST,
-  ADD_POST
+  ADD_POST,
+  ADD_COMMENT,
+  DELETE_COMMENT
 } from "../constants";
 
 export const getPosts = () => async dispatch => {
@@ -101,6 +103,42 @@ export const addPost = formData => async dispatch => {
     dispatch({
       type: ADD_POST,
       payload: res.data
+    });
+  } catch (error) {
+    dispatch({
+      type: POST_ERROR,
+      payload: { msg: error.response.statusText, status: error.response.status }
+    });
+  }
+};
+
+export const addComment = (postId, formData) => async dispatch => {
+  try {
+    const res = await axios.post(
+      `${BASE_URL}api/posts/comments/${postId}`,
+      formData,
+      config
+    );
+
+    dispatch({
+      type: ADD_COMMENT,
+      payload: res.data
+    });
+  } catch (error) {
+    dispatch({
+      type: POST_ERROR,
+      payload: { msg: error.response.statusText, status: error.response.status }
+    });
+  }
+};
+
+export const deleteComment = (postId, commentId) => async dispatch => {
+  try {
+    axios.delete(`${BASE_URL}api/posts/comments/${postId}/${commentId}`);
+
+    dispatch({
+      type: DELETE_COMMENT,
+      payload: commentId
     });
   } catch (error) {
     dispatch({

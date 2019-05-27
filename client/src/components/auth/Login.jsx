@@ -5,8 +5,6 @@ import { loginUser } from "../../actions/auth";
 import { PropTypes } from "prop-types";
 
 const Login = ({ loginUser, isAuthenticated }) => {
-  console.log(isAuthenticated);
-
   const [formData, setFormData] = useState({
     email: "",
     password: ""
@@ -20,7 +18,6 @@ const Login = ({ loginUser, isAuthenticated }) => {
   const onSubmit = async e => {
     e.preventDefault();
     loginUser({ email, password });
-    console.log("Logged in !");
   };
   if (isAuthenticated) {
     return <Redirect to="/dashboard" />;
